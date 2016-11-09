@@ -1,0 +1,441 @@
+<head>
+  <title>Papeyes</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+</head>
+
+<body>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+</body>
+
+<!--templates-->
+
+<!-- overall layout-->
+	<!-- Do not put a layout for login and registration page-->
+<template name="blank">
+	{{>yield}}
+</template>
+
+<template name="main">
+	<div class="signout">Signout</div>
+	<br/>
+    {{> yield}}
+    <br/>
+    <br/>
+    <p>Copyright &copy; Papeyes, 2016.</p>
+    {{> navigation}}
+</template>
+
+<template name="navigation">
+	<div class="allFooter">
+	    <div class="tabs">
+	    	<a href="{{pathFor route='homePage'}}">
+		    	<div class="tab" id="home">
+		    		<img src="/home.PNG" style="width:50%;height:100%">
+		    	</div>
+	    	</a>
+	    	<a href="{{pathFor route='menu'}}">
+		    	<div class="tab" id="Menu">
+			    	<img src="/menu.PNG" style="width:50%;height:100%">
+		    	</div>
+		    </a>
+		    <a href="{{pathFor route='order'}}">
+		    	<div class="tab" id="Reservation">
+			    	<img src="/order.PNG" style="width:50%;height:100%">
+		    	</div>
+		    </a>
+	    	<a href="{{pathFor route='profilePage'}}">
+		    	<div class="tab" id="Profile">
+		    		<img src="/profile.PNG" style="width:50%;height:100%">
+		    	</div>
+		    </a>
+	    </div>
+	    <div class="tabs">
+	    	<a href="{{pathFor route='homePage'}}">
+		    	<div class="tab2">
+		    		Home
+		    	</div>
+	    	</a>
+	    	<a href="{{pathFor route='menu'}}">
+		    	<div class="tab2">
+			    	Menu
+		    	</div>
+		    </a>
+		    <a href="{{pathFor route='order'}}">
+		    	<div class="tab2">
+			    	Order
+		    	</div>
+		    </a>
+	    	<a href="{{pathFor route='profilePage'}}">
+		    	<div class="tab2">
+		    		Profile
+		    	</div>
+		    </a>
+	    </div>
+    </div>
+</template>
+
+<!--for login & registration-->
+
+<template name="loginPage">
+	<div class="bordered">
+		<h1 style="text-align:center">Please Login</h1>
+		<br/>
+		<div class="forms">
+			<form>
+				User Name: <input type="text" name="userName"/>
+				<br/>
+				<br/>
+				Password:  <input type="password" name="password"/>
+				<br/>
+				<br/>
+				<input type="submit" value="Login">
+			</form>
+		</div>
+		<br/>
+		<br/>
+		<a href="{{pathFor route='registrationPage'}}">Not a member? Register here!</a>
+	</div>
+</template>
+
+<template name="registrationPage">
+	<div class="bordered">
+		<h1>Registration</h1>
+		<br/>
+		<div class="forms">
+			<form>
+				Real Name:  <input type="text" name="name"/>
+				<br/>
+				<br/>
+				User Name: <input type="text" name="userName"/>
+				<br/>
+				<br/>
+				Password:  <input type="password" name="password"/>
+				<br/>
+				<br/>
+				Confirm Password:  <input type="password" name="confirmPassword"/>
+				<br/>
+				<br/>
+				Phone Number:  <input type="text" name="handphoneNumber"/>
+				<br/>
+				<br/>
+				Credit Card:  <input type="text" name="creditCardNumber"/>
+				<br/>
+				<br/>
+				<input type="submit" value="Sign Up!">
+			</form>
+		</div>
+	</div>
+</template>
+
+<!-- for promotions page-->
+
+<template name="homePage">
+	<div class="col-sm-12">
+		{{#each customer}}
+			<h1 style="text-align:center">Welcome {{name}}!</h1>
+		{{/each}}
+		<br/>
+		<div class="bordered">
+			{{>personalized}}
+			{{>general}}
+			<br/>
+			<button class="popularPurchases">View Popular Dishes</button>
+			<br/>
+			<div id="graph"></div>
+		</div>
+	</div>
+</template>
+
+<template name="general">
+  <table style="text-align:center" width=75% align=center>
+  	  <tr>
+  	  	<td colspan="5"><h3>General Promotions</h3></td>
+  	  </tr>
+	  <tr>
+	  	<td><b>Image</b></td>
+	  	<td><b>Item</b></td>
+	  	<td><b>Discount</b></td>
+	  	<td><b>Validity Period</b></td>
+	  	<td><b>Price</b></td>
+	  </tr>
+	  {{#each generalPromo}}
+	  <tr>
+		  <td>
+		  	<img src={{img}} style="height:150px;width:200px">
+		  </td>
+		  <td>
+		  	{{item}}
+		  </td>
+		  <td>
+		  	{{discountPercentage}}%
+		  </td>
+		  <td>
+		  	{{period}}
+		  </td>
+		  <td>
+		  	${{price}}
+		  </td>
+	  </tr>
+	  {{/each}}
+  </table>
+</template>
+
+<template name="personalized">
+  <br/>
+  <table style="text-align:center" padding=50px width=75% align=center>
+  	  <tr>
+  	  	<td colspan="2"><h3>Recommended Items<br/> Based on Past Purchases</h3></td>
+  	  </tr>
+	  <tr>
+	  	<td><b>Image</b></td>
+	  	<td><b>Item</b></td>
+	  </tr>
+	  {{#each personalizedSuggestion}}
+	  <tr>
+		  <td>
+		  	<img src={{img}} style="height:150px;width:200px">
+		  </td>
+		  <td>
+		  	{{item}}
+		  </td>
+	  </tr>
+	  {{/each}}
+  </table>
+  <br/>
+</template>
+
+<!-- for menu page-->
+
+ <template name="menu">
+	<div class="border">
+	<h1>Menu</h1>
+ 	<table style="text-align:center" padding=50px width=75% align=center>
+     	<tr>
+	     	<td>Image</td>
+	        <td>Food</td>
+	        <td>Price</td>
+        </tr>
+        {{#each food}}
+        <tr>      
+          <td><img src={{img}} style="height:150px;width:200px"></td>
+          <td>{{name}} </td>
+          <td>${{price}}</td>
+        </tr> 
+        {{/each}}
+      </table>
+    </div>
+</template>
+
+<!-- for ordering page-->
+
+<template name="order">
+ 	<h2>I Would Like To Order For..</h2>
+  {{> content}}
+  <form class="form-register">
+  <div class="order-option-content">
+    <div class="option-header">
+      <h5><span class="order-method">Dine In</span> Details</h5>
+     <div class="small-1">
+        <label for="orderCon">Name</label>
+        {{name}}
+      </div>
+      <div class="small-1">
+      <label for="orderCon">Date and Time</label>
+        <div class="input-group datetimepicker">
+         <input class="set-due-date form-control" type="text" />
+         <span class="input-group-addon" height="10px"><i class="glyphicon glyphicon-calendar"></i></span>
+        </div>       
+      </div>
+      {{#if isDineIn}}
+      <div class="small-2">      
+        <label for="orderCon">Pax</label>
+        <select name="pax" class="form-control" id="pax">
+          <option value="2">2</option>
+          <option value="4">4</option>
+          <option value="6">6</option>
+          <option value="8">8</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+      {{/if}}    
+    </div>
+    {{#if isTakeAway}}
+    <br>
+    <br>
+    <br>
+    <br>
+    {{/if}}
+    <div class="option-header">
+      <h5>Choose Store</h5>
+      <div class="store-list">
+        <ul>
+          {{#each stores}}
+            {{> store}}
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+    <br>
+  </div>
+  <div class="orderbuttons" id="orderbuttons">
+    <div class="small-3">
+      {{#if isDineIn}}
+        <button type="submit" class="button start-ordering" id="btnOrderDinein">Start Dine In Order</button>
+      {{/if}}
+      
+      {{#if isTakeAway}}
+        <button class="button start-ordering" id="btnOrderTakeaway">Start Take Away Order</button>
+      {{/if}}
+    </div>
+  </div>
+  </form>
+</template>
+
+<template name="content">
+  <div class="order-option">
+      <a href="" id="set-dinein" class="active">
+        Dine In
+      </a>
+      <a href="" id="set-takeaway">
+        Take Away
+      </a>
+  </div>
+</template>
+
+<template name="store">
+  <li class="{{#if checked}}checked{{/if}}">
+    <div class="left">
+      <span class="text"><strong>{{storeName}}</strong></span><br>
+      <span class="text" style="font-size:12.5px">{{storeAddress}}</span><br>
+      {{#if isDineIn}}
+          <span style="color: {{#if resStatus}}green{{/if}} {{#unless resStatus}}red{{/unless}} ">Store Status: {{storeStatus}}</span>
+      {{/if}}
+    </div>
+      <div class="right">
+      {{#if isDineIn}}
+        {{#if resStatus}}
+          <input type="radio" checked="{{checked}}" name="toggle-checked" id="toggle-checked" />
+        {{/if}}
+        {{else}}
+        <input type="radio" checked="{{checked}}" name="toggle-checked2" id="toggle-checked2" />
+      {{/if}}
+      </div>
+  </li><br>
+</template>
+	<!--2nd page of ordering procedure-->
+<template name="order2">
+	<h1>Order</h1>
+	<div class="border">
+	     <table style="text-align:center" width=90% align=center >
+	        <td>Image</td>
+	        <td>Name</td>
+	        <td>Price</td>
+	        <td>Quantity</td>
+	        {{#each food}}
+	        <tr>      
+	          <td><img src={{img}} style="height:150px;width:200px"></td>
+	          <td>{{name}} </td>
+	          <td>{{price}}</td>
+	          <form>
+	          <input type="text" name="quantityNumber" placeholder="Enter The Quantity">
+	          <input type="submit" value="Add ">
+	          </form>
+	        </tr> 
+	        {{/each}}
+	      </table>
+	  <br/>
+	  <br/>
+      <button class="next">View Bill</button>
+    </div>
+</template>
+	<!--last page of ordering procedure-->	
+<template name="payment">
+	<h1>Payment</h1>
+	<div class="border">
+	     <table style="text-align:center" width=90% align=center >
+	        <td>Image</td>
+	        <td>Name</td>
+	        <td>Quantity</td>
+	        <td>Price</td>
+	        {{#each order}}
+	        <tr>      
+	          <td><img src={{img}} style="height:150px;width:200px"></td>
+	          <td>{{name}}</td>
+	          <td>{{quantity}} </td>
+	          <td>${{price}}</td>
+	        </tr> 
+	        {{/each}}
+	        <tr>
+	          <td colspan="3">Total</td>
+	          <td>${{total}}</td>
+	        </tr>
+	      </table>
+	      <br/>
+	</div>
+      <button class="pay">Make Payment</button>
+</template>
+
+<!--profile page-->
+
+<template name="profilePage">
+	<div class="col-sm-12">
+		{{#each customer}}
+			<h1 style="text-align:center">Welcome {{name}}!</h1>
+		{{/each}}
+		<div class="bordered">
+			<table style="text-align:center" width=90% align=center>
+			  	  <tr>
+			  	  	<td colspan=2><h3>Personal Information</h3></td>
+			  	  </tr>
+				  {{#each customer}}
+				  <tr>
+				  	<td>
+				  		User Name
+				  	</td>	
+					<td>
+					  	{{userName}}
+					</td>
+				  </tr>				  
+				  <tr>
+				  	<td>
+				  		Phone Number
+				  	</td>	
+					<td>
+					  	{{handphoneNumber}}
+					</td>
+				  </tr>
+				  <tr>
+				  	<td>
+				  		Balance Remaining
+				  	</td>	
+					<td>
+					  	${{balanceRemaining}}
+					</td>
+				  </tr>
+				  <tr>
+				  	<td>
+				  		Credit Card Number
+				  	</td>	
+					<td>
+					  	{{creditCardNumber}}
+					</td>
+				  </tr>				  
+				  {{/each}}
+		 	</table>
+		 	<br/>
+		 	<button class="addBalance">Add Balance</button>
+		 	<br/>
+		 	<br/>
+		 	<button class="editInfo">Edit Information</button>
+		 	<br/>
+		 	<br/>
+			<button class="pastPurchases">View Past Purchases</button>
+			<br/>
+			<br/>
+			<div id="graph"></div>
+		</div>
+	</div>
+</template>
