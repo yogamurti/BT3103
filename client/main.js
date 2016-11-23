@@ -13,11 +13,12 @@ Router.route('/', {
 
 Router.route('/homePage');
 Router.route('/registrationPage', {layoutTemplate: 'blank'});
+Router.route('restaurant', {layoutTemplate: 'blank'});
 Router.route('/profilePage');
 Router.route('/menu');
 Router.route('/order');
 Router.route('/order2');
-Router.route('payment')
+Router.route('payment');
 
 Router.configure({
     layoutTemplate: 'main'
@@ -222,6 +223,12 @@ Template.payment.events({
 
 // helpers for other pages
 
+Template.restaurant.helpers({
+        'rests': function(){
+            return RestaurantList.find({});
+        }
+})
+
 Template.general.helpers({
 	generalPromo(){
 		return generalPromotionsList.find({});
@@ -250,17 +257,17 @@ Template.personalized.helpers({
 	},
 })
 
+Template.homePage.helpers({
+	customer(){
+		return currentCustomer.find({});
+	}
+})
+
 Template.profilePage.helpers({
 	customer(){
 		return currentCustomer.find({});
 	},
 	balanceRemaining() {return this.balanceRemaining.toFixed(2);}
-})
-
-Template.homePage.helpers({
-	customer(){
-		return currentCustomer.find({});
-	}
 })
 
 // events for other pages (wrapped in meteor.startup so that highcharts will run properly)
@@ -285,7 +292,7 @@ Meteor.startup(function () {
     		}
     		else{
     			if (entry.password==password){
-    				Router.go("homePage");
+    				Router.go("restaurant");
     				currentCustomer.insert({name:entry.name,userName:entry.userName,password:entry.password,handphoneNumber:entry.handphoneNumber,balanceRemaining:entry.balanceRemaining,creditCardNumber:entry.creditCardNumber});
     			}
     			else{

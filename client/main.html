@@ -13,7 +13,7 @@
 <!--templates-->
 
 <!-- overall layout-->
-	<!-- Do not put a layout for login and registration page-->
+	<!-- Do not put a layout for login,registration and restaurants page-->
 <template name="blank">
 	{{>yield}}
 </template>
@@ -128,6 +128,19 @@
 			</form>
 		</div>
 	</div>
+</template>
+
+<!-- to select the restaurant-->
+
+<template name="restaurant">
+   <h1>Choose A Restaurant!</h1>
+   <br/>
+    <div class = display:inline>
+     {{#each rests}}
+    	<a href="{{pathFor route='homePage'}}"><img src={{img}} style="height:150px;width:200px"></a>
+    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     {{/each}}
+    </div>
 </template>
 
 <!-- for promotions page-->

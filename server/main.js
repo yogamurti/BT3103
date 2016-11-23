@@ -13,6 +13,7 @@ Meteor.startup(() => {
   currentCustomer.remove({});
   FoodList.remove({});
   OrderList.remove({});
+  RestaurantList.remove({});
   Meteor.call('store.removeall');
 
   // mockUp user for login and dynamic pages (personalized suggestions & profile page)
@@ -37,6 +38,13 @@ Meteor.startup(() => {
   FoodList.insert({name:'Coca Cola', price:1.5, img:"/food/cocaCola.jpg"});
   FoodList.insert({name:'Green Tea', price:1.5, img:"/food/greenTea.PNG"});
   FoodList.insert({name:'Wicked Good', price:4,img:"/food/wickedGood.PNG"});
+
+  // mockUp entries to select a restaurant that out system covers 
+  RestaurantList.insert({name:"Popeyes", img:"/restaurants/popeyes.jpg"});
+  RestaurantList.insert({name:"Long John Silver ", img:"/restaurants/ljs.jpg"});
+  RestaurantList.insert({name:"Subway", img:"/restaurants/subway.jpg"}); 
+  RestaurantList.insert({name:"Texas Chicken", img:"/restaurants/texas-chicken.png"}); 
+  RestaurantList.insert({name:"Wendy's", img:"/restaurants/Wendys.png"});
 
   // mockUp entries for the locations of the stores (displayed on the 1st page of the order tab)
   if (Store.find().count() == 0) {

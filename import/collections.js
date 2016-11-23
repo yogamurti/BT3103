@@ -18,3 +18,6 @@ OrderList = new Mongo.Collection('order');
 
 // for real-time update of highcharts (recording what customers have ordered)
 itemsSoldList = new Mongo.Collection('itemsSold');
+
+// for restaurant select
+RestaurantList = new Meteor.Collection('restaurant');
